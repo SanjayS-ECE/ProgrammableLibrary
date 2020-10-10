@@ -24,11 +24,18 @@ testApp : testApp.o libprogadt.a
 		$(CC) $(LDFLAGS) testApp.o -o testApp -L$(TARGET_LIB_PATH) -lprogadt
 		cp -r testApp $(TARGET_LIB_PATH)
 
+testApp_dlist : testApp_dlist.o libprogadt.a
+		$(CC) $(LDFLAGS) testApp_dlist.o -o testApp_dlist -L$(TARGET_LIB_PATH) -lprogadt
+		cp -r testApp_dlist $(TARGET_LIB_PATH)
+
 testApp.o : $(APP_SRC_PATH)testApp.c
 	$(CC) $(CFLAGS) $(APP_SRC_PATH)testApp.c -o testApp.o
-	
-libprogadt.a : dir slist.o
-	$(AR) rs libprogadt.a slist.o
+
+testApp_dlist.o : $(APP_SRC_PATH)testApp_dlist.c
+	$(CC) $(CFLAGS) $(APP_SRC_PATH)testApp_dlist.c -o testApp_dlist.o
+
+libprogadt.a : dir slist.o dlist.o
+	$(AR) rs libprogadt.a slist.o dlist.o
 	cp -r libprogadt.a $(TARGET_LIB_PATH)
 	cp -r $(INCLUDE_PATH)*.h $(TARGET_INCLUDE_PATH)
 
@@ -38,6 +45,9 @@ dir :
 
 slist.o : $(LIB_SRC_PATH)slist.c
 	$(CC) $(CFLAGS) $(LIB_SRC_PATH)slist.c -o slist.o
+
+dlist.o : $(LIB_SRC_PATH)dlist.c
+	$(CC) $(CFLAGS) $(LIB_SRC_PATH)dlist.c -o dlist.o
 
 clean :
 	rm -f *.o $(APPTARGET) $(LIBTARGET)
